@@ -8,12 +8,15 @@ import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import CartDrawer from './components/cart/CartDrawer';
 import AuthModal from './components/auth/AuthModal';
+import PageTransition from './components/common/PageTransition';
 
 function AppContent() {
 	const [activePage, setActivePage] = useState('home');
 	const [cartOpen, setCartOpen] = useState(false);
 	const [toastText, setToastText] = useState('');
 	const [showToast, setShowToast] = useState(false);
+	const [isTransitioning, setIsTransitioning] = useState(true);
+	const [transitionMsg, setTransitionMsg] = useState('Roasting Fresh Beans');
 
 	const triggerToast = (msg) => {
 		setToastText(msg);
@@ -23,29 +26,66 @@ function AppContent() {
 		}, 3500);
 	};
 
+	// Trigger on reload / initial page load
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setIsTransitioning(false);
+		}, 1400);
+		return () => clearTimeout(timer);
+	}, []);
+
+	// Handle browser back/forward or direct hash entry
 	useEffect(() => {
 		const handleHashChange = () => {
 			const hash = window.location.hash.replace('#', '');
+			let target = 'home';
 			if (hash === 'menu') {
-				setActivePage('menu');
+				target = 'menu';
 			} else if (hash === 'checkout') {
-				setActivePage('checkout');
+				target = 'checkout';
 			} else if (hash === 'profile' || hash === 'orders') {
-				setActivePage('profile');
+				target = 'profile';
 			} else if (hash === 'home' || hash === '') {
-				setActivePage('home');
+				target = 'home';
+			}
+
+			if (target !== activePage) {
+				setIsTransitioning(true);
+				setTransitionMsg('Switching Selection');
+				setActivePage(target);
+				setTimeout(() => {
+					setIsTransitioning(false);
+				}, 1200);
 			}
 		};
 
 		window.addEventListener('hashchange', handleHashChange);
-		handleHashChange();
 		return () => window.removeEventListener('hashchange', handleHashChange);
-	}, []);
+	}, [activePage]);
 
 	const navigate = (page) => {
-		setActivePage(page);
-		window.location.hash = page === 'home' ? '' : page;
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		if (page === activePage) return;
+
+		setIsTransitioning(true);
+		setTransitionMsg(
+			page === 'menu'
+				? 'Artisanal Selections'
+				: page === 'checkout'
+				? 'Securing Barista Order'
+				: page === 'profile'
+				? 'Customer Dossier'
+				: 'Welcome to Atelier'
+		);
+
+		setTimeout(() => {
+			setActivePage(page);
+			window.location.hash = page === 'home' ? '' : page;
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}, 200);
+
+		setTimeout(() => {
+			setIsTransitioning(false);
+		}, 1250);
 	};
 
 	return (
@@ -110,6 +150,9 @@ function AppContent() {
 
 			{/* Global Authentication Modal (Sign In / Register) */}
 			<AuthModal onShowToast={triggerToast} />
+
+			{/* Global Cinematic Coffee Transition Video Overlay */}
+			<PageTransition active={isTransitioning} message={transitionMsg} />
 		</div>
 	);
 }

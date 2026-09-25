@@ -44,5 +44,10 @@ button, input, select { font: inherit; } button, a { cursor: pointer; } a { colo
 .addon-meta { display: flex; flex: 1; flex-direction: column; min-width: 0; }
 .addon-name { color: #1f1b18; font-size: .68rem; font-weight: 600; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .addon-price { color: #84310e; font-size: .62rem; font-weight: 700; margin-top: .15rem; }
-.addon-check { align-items: center; background: #f6ece7; border-radius: 50%; color: #84310e; display: flex; font-size: .65rem; font-weight: 700; height: 1.15rem; justify-content: center; width: 1.15rem; flex-shrink: 0; }
 .addon-option.selected .addon-check { background: #84310e; color: #fff; }
+
+@keyframes transitionProgress {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(20%); }
+  100% { transform: translateX(120%); }
+}
