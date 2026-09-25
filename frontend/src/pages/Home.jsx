@@ -5,12 +5,10 @@ import DigitalService from '../components/home/DigitalService';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import VisitRoastery from '../components/home/VisitRoastery';
 import HomeFooter from '../components/home/HomeFooter';
-import TastingModal from '../components/home/TastingModal';
 
 export default function Home({ onNavigate, onOpenCart }) {
 	const [toastText, setToastText] = useState('');
 	const [showToast, setShowToast] = useState(false);
-	const [isTastingOpen, setIsTastingOpen] = useState(false);
 
 	const triggerToast = (msg) => {
 		setToastText(msg);
@@ -36,36 +34,24 @@ export default function Home({ onNavigate, onOpenCart }) {
 			</div>
 
 			{/* 1. Cinematic Hero Section */}
-			<HeroSection
-				onNavigate={onNavigate}
-				onOpenTastingModal={() => setIsTastingOpen(true)}
-			/>
+			<HeroSection onNavigate={onNavigate} />
 
 			{/* 2. Roasting Craft & Terroir Standard */}
 			<RoastingPhilosophy />
 
-			{/* 3. Digital Table Service Experience */}
+			{/* 3. Digital Table Service Experience (Methods Only) */}
 			<DigitalService onNavigate={onNavigate} />
 
 			{/* 4. Editorial Testimonials with Add Review */}
 			<TestimonialsSection onShowToast={triggerToast} />
 
 			{/* 5. Visit the Roastery (SVKM College Campus) */}
-			<VisitRoastery
-				onOpenTastingModal={() => setIsTastingOpen(true)}
-			/>
+			<VisitRoastery />
 
 			{/* 6. Footer with Dispatch Subscription */}
 			<HomeFooter
 				onShowToast={triggerToast}
 				onNavigate={onNavigate}
-			/>
-
-			{/* Interactive Tasting Modal */}
-			<TastingModal
-				isOpen={isTastingOpen}
-				onClose={() => setIsTastingOpen(false)}
-				onShowToast={triggerToast}
 			/>
 		</div>
 	);

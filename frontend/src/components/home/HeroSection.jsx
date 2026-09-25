@@ -1,4 +1,4 @@
-export default function HeroSection({ onNavigate, onOpenTastingModal }) {
+export default function HeroSection({ onNavigate }) {
 	return (
 		<section className="relative w-full overflow-hidden bg-[#fbf2ec] min-h-[92vh] flex items-center justify-center">
 			{/* Cinematic Hero Background */}
@@ -34,7 +34,7 @@ export default function HeroSection({ onNavigate, onOpenTastingModal }) {
 					</p>
 
 					{/* Interactive Action Buttons */}
-					<div className="flex flex-wrap items-center gap-4 pt-2">
+					<div className="pt-2">
 						<button
 							type="button"
 							onClick={() => onNavigate('menu')}
@@ -42,14 +42,6 @@ export default function HeroSection({ onNavigate, onOpenTastingModal }) {
 						>
 							Explore The Menu
 							<span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
-						</button>
-
-						<button
-							type="button"
-							onClick={onOpenTastingModal}
-							className="inline-flex items-center justify-center px-7 py-4 rounded-full bg-[#f0e6e1]/80 hover:bg-[#eae1db] backdrop-blur-sm text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-sm font-semibold transition-all border border-[#dcc1b8] cursor-pointer"
-						>
-							Reserve a Tasting Experience
 						</button>
 					</div>
 

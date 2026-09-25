@@ -24,7 +24,6 @@ export default function Menu({ onOpenCart }) {
 					<h1>Menu</h1>
 				</div>
 				<div className="header-actions">
-					<span>Table 04 · SVKM Roastery Pavilion</span>
 					<label className="search-box">
 						⌕
 						<input

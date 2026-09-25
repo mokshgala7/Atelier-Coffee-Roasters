@@ -90,20 +90,6 @@ export default function DigitalService({ onNavigate }) {
 						</div>
 					</div>
 
-					{/* Action Strip */}
-					<div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-						<button
-							type="button"
-							onClick={() => onNavigate('menu')}
-							className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#a34824] hover:bg-[#84310e] text-white font-['Plus_Jakarta_Sans',sans-serif] text-sm font-bold shadow-sm transition-all transform hover:scale-[1.02] border-0 cursor-pointer"
-						>
-							Open Interactive Ordering Menu
-						</button>
-						<div className="flex items-center gap-2 text-[#665c55] font-['Plus_Jakarta_Sans',sans-serif] text-xs">
-							<span className="material-symbols-outlined text-[18px] text-[#84310e]">smartphone</span>
-							<span>Compatible with Apple Pay, UPI &amp; Cards</span>
-						</div>
-					</div>
 				</div>
 			</div>
 		</section>
