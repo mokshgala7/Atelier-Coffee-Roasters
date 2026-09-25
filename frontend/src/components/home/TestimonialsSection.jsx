@@ -40,6 +40,37 @@ export default function TestimonialsSection({ onShowToast }) {
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	// Load published reviews from MongoDB Atlas on mount
+	useEffect(() => {
+		fetch('/api/reviews')
+			.then((res) => {
+				if (!res.ok) throw new Error('Network response was not ok');
+				return res.json();
+			})
+			.then((data) => {
+				if (Array.isArray(data) && data.length > 0) {
+					// Format MongoDB documents for display
+					const formatted = data.map((d) => ({
+						id: d._id || d.id,
+						author: d.author,
+						publication: d.publication || 'Verified Patron',
+						quote: d.quote,
+						rating: d.rating || 5,
+						favoriteItem: d.favoriteItem,
+						date: d.date
+					}));
+					// Merge default editorial testimonials with newly published MongoDB reviews
+					const existingIds = new Set(formatted.map((f) => f.quote));
+					const remainingDefaults = defaultTestimonials.filter((def) => !existingIds.has(def.quote));
+					const combined = [...formatted, ...remainingDefaults];
+					setReviews(combined);
+				}
+			})
+			.catch((err) => {
+				console.info('Using local reviews cache (offline / local fallback):', err.message);
+			});
+	}, []);
+
 	useEffect(() => {
 		try {
 			localStorage.setItem('atelier_reviews', JSON.stringify(reviews));
@@ -48,18 +79,31 @@ export default function TestimonialsSection({ onShowToast }) {
 		}
 	}, [reviews]);
 
-	const handleAddReview = (newReview) => {
-		// Prepend newly added review so it immediately appears at the front
+	const handleAddReview = async (newReview) => {
+		// Immediate optimistic UI update
 		setReviews((prev) => [newReview, ...prev]);
 
 		if (onShowToast) {
-			onShowToast(`Thank you, ${newReview.author}! Your review is now published.`);
+			onShowToast(`Thank you, ${newReview.author}! Your review is saved.`);
 		}
 
-		// FUTURE MONGODB SYNC HOOK:
-		// When the user provides the MongoDB URI / API route:
-		// fetch('/api/reviews', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newReview) })
-		//   .catch(err => console.error('MongoDB sync error:', err));
+		// Persist directly to MongoDB Atlas
+		try {
+			const res = await fetch('/api/reviews', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newReview)
+			});
+			const result = await res.json();
+			if (result.success && result.review?._id) {
+				// Update with official MongoDB _id
+				setReviews((prev) =>
+					prev.map((r) => (r.id === newReview.id ? { ...r, id: result.review._id } : r))
+				);
+			}
+		} catch (err) {
+			console.warn('MongoDB sync deferred (saved locally):', err.message);
+		}
 	};
 
 	return (

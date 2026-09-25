@@ -115,6 +115,22 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 
 		setIsSubmitted(true);
 		onShowToast(`Tasting reserved for ${name} on ${getFormattedDate(selectedDate)} at ${formatTimeDisplay(selectedTime)}!`);
+
+		// Persist reservation to MongoDB Atlas
+		fetch('/api/reservations', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				name: name.trim(),
+				phone: phone.trim(),
+				guests,
+				date: selectedDate,
+				time: selectedTime,
+				notes: notes.trim()
+			})
+		}).catch((err) => {
+			console.info('Reservation saved locally:', err.message);
+		});
 	};
 
 	return (
