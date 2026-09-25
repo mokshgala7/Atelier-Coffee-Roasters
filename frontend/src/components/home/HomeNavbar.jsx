@@ -77,17 +77,6 @@ export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 					</button>
 					<button
 						type="button"
-						onClick={() => onNavigate('profile')}
-						className={`transition-all font-['Plus_Jakarta_Sans',sans-serif] text-sm font-semibold rounded-full py-1.5 px-4 border-0 cursor-pointer ${
-							activePage === 'profile'
-								? 'bg-[#ebddd4] text-[#1f1b18]'
-								: 'bg-transparent text-[#56423c] hover:text-[#1f1b18] hover:bg-[#f6ece7]'
-						}`}
-					>
-						My Orders &amp; Profile
-					</button>
-					<button
-						type="button"
 						onClick={() => handleScrollTo('visit-roastery')}
 						className="font-['Plus_Jakarta_Sans',sans-serif] text-sm font-medium text-[#56423c] hover:text-[#1f1b18] hover:bg-[#f6ece7] transition-all rounded-full py-1.5 px-3 border-0 bg-transparent cursor-pointer"
 					>

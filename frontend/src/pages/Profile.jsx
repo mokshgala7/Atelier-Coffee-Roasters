@@ -12,16 +12,19 @@ export default function Profile({ onNavigate, onShowToast }) {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'reservations'
 
-  // Fetch past orders and reservations from MongoDB Atlas
+  // Fetch past orders and reservations only for authenticated user
   useEffect(() => {
     async function fetchData() {
+      if (!isAuthenticated || !user) {
+        setOrders([]);
+        setReservations([]);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       try {
-        // Query orders by userId, email, or phone
-        let orderUrl = '/api/orders';
-        if (user?.id) {
-          orderUrl = `/api/orders/user/${user.id}?email=${encodeURIComponent(user.email || '')}&phone=${encodeURIComponent(user.phone || '')}`;
-        }
+        const orderUrl = `/api/orders/user/${user.id || 'me'}?email=${encodeURIComponent(user.email || '')}&phone=${encodeURIComponent(user.phone || '')}`;
 
         const [ordersRes, resvRes] = await Promise.all([
           fetch(orderUrl).catch(() => null),
@@ -30,7 +33,6 @@ export default function Profile({ onNavigate, onShowToast }) {
 
         if (ordersRes && ordersRes.ok) {
           const ordersData = await ordersRes.json();
-          // If logged in, filter or sort
           if (Array.isArray(ordersData)) {
             setOrders(ordersData);
           }
@@ -39,26 +41,24 @@ export default function Profile({ onNavigate, onShowToast }) {
         if (resvRes && resvRes.ok) {
           const resvData = await resvRes.json();
           if (Array.isArray(resvData)) {
-            // Filter reservations matching user phone or email if logged in
-            if (user?.phone || user?.name) {
-              const userResvs = resvData.filter(
-                (r) => r.phone === user.phone || r.name?.toLowerCase().includes(user.name?.toLowerCase())
-              );
-              setReservations(userResvs.length ? userResvs : resvData);
-            } else {
-              setReservations(resvData);
-            }
+            const userResvs = resvData.filter(
+              (r) =>
+                (user.phone && r.phone === user.phone) ||
+                (user.email && r.email?.toLowerCase() === user.email.toLowerCase()) ||
+                (user.name && r.name?.toLowerCase().includes(user.name?.toLowerCase()))
+            );
+            setReservations(userResvs);
           }
         }
       } catch (err) {
-        console.warn('Error fetching user data from MongoDB:', err);
+        console.warn('Error fetching user data:', err);
       } finally {
         setLoading(false);
       }
     }
 
     fetchData();
-  }, [user]);
+  }, [user, isAuthenticated]);
 
   const handleReorder = (order) => {
     if (!order.items || !order.items.length) return;
@@ -236,6 +236,25 @@ export default function Profile({ onNavigate, onShowToast }) {
                   </article>
                 );
               })
+            ) : !isAuthenticated ? (
+              <div className="p-12 text-center rounded-2xl bg-[#fbf2ec] border border-[#ebdcd5] space-y-3">
+                <span className="material-symbols-outlined text-[36px] text-[#a34824]">lock</span>
+                <h3 className="font-['Playfair_Display',serif] text-lg font-bold text-[#1f1b18]">
+                  Sign In to Access Your Orders
+                </h3>
+                <p className="font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55] max-w-sm mx-auto">
+                  You are currently browsing as a guest. Please sign in to view your personalized past orders, receipts, and reorder favorites.
+                </p>
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('login')}
+                    className="px-6 py-2.5 rounded-full bg-[#a34824] hover:bg-[#84310e] text-white font-['Plus_Jakarta_Sans',sans-serif] text-xs font-bold uppercase tracking-wider border-0 cursor-pointer shadow-xs"
+                  >
+                    Sign In / Register
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="p-12 text-center rounded-2xl bg-[#fbf2ec] border border-[#ebdcd5] space-y-3">
                 <span className="material-symbols-outlined text-[36px] text-[#a34824]">receipt_long</span>
@@ -290,6 +309,25 @@ export default function Profile({ onNavigate, onShowToast }) {
                   </span>
                 </article>
               ))
+            ) : !isAuthenticated ? (
+              <div className="p-12 text-center rounded-2xl bg-[#fbf2ec] border border-[#ebdcd5] space-y-3">
+                <span className="material-symbols-outlined text-[36px] text-[#a34824]">lock</span>
+                <h3 className="font-['Playfair_Display',serif] text-lg font-bold text-[#1f1b18]">
+                  Sign In to View Your Tasting Reservations
+                </h3>
+                <p className="font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55] max-w-sm mx-auto">
+                  Sign in with your Atelier Guild account to access your reserved cupping dates and party details.
+                </p>
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('login')}
+                    className="px-6 py-2.5 rounded-full bg-[#a34824] hover:bg-[#84310e] text-white font-['Plus_Jakarta_Sans',sans-serif] text-xs font-bold uppercase tracking-wider border-0 cursor-pointer shadow-xs"
+                  >
+                    Sign In / Register
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="p-12 text-center rounded-2xl bg-[#fbf2ec] border border-[#ebdcd5] space-y-3">
                 <span className="material-symbols-outlined text-[36px] text-[#a34824]">calendar_today</span>
