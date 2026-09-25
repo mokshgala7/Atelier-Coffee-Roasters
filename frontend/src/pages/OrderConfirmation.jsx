@@ -1,0 +1,1 @@
+export default function OrderConfirmation() { return <main><h1>Order confirmation</h1></main>; }
