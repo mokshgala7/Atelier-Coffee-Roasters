@@ -13,7 +13,20 @@ export default function CategorySidebar({ categories, activeCategory }) {
 			</div>
 			<nav>
 				{categories.map((category) => (
-					<a className={activeCategory === category.id ? 'active' : ''} key={category.id} href={`#${category.id}`}>
+					<a
+						className={activeCategory === category.id ? 'active' : ''}
+						key={category.id}
+						href={`#${category.id}`}
+						onClick={(e) => {
+							e.preventDefault();
+							const el = document.getElementById(category.id);
+							if (el) {
+								const navHeight = 90;
+								const top = el.getBoundingClientRect().top + window.pageYOffset - navHeight;
+								window.scrollTo({ top, behavior: 'smooth' });
+							}
+						}}
+					>
 						<span className="dot" />
 						{category.name}
 						<b>{category.products.length}</b>

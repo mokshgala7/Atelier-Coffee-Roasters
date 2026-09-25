@@ -38,14 +38,24 @@ function AppContent() {
 	useEffect(() => {
 		const handleHashChange = () => {
 			const hash = window.location.hash.replace('#', '');
-			let target = 'home';
-			if (hash === 'menu') {
+			let target = activePage;
+			if (
+				hash === 'menu' ||
+				hash.includes('coffee') ||
+				hash.includes('tea') ||
+				hash.includes('dessert') ||
+				hash.includes('brownie') ||
+				hash.includes('matcha') ||
+				hash.includes('shake') ||
+				hash.includes('mocktail') ||
+				hash.includes('chocolate')
+			) {
 				target = 'menu';
 			} else if (hash === 'checkout') {
 				target = 'checkout';
 			} else if (hash === 'profile' || hash === 'orders') {
 				target = 'profile';
-			} else if (hash === 'home' || hash === '') {
+			} else if (hash === 'home' || hash === '' || hash === 'roasting-philosophy' || hash === 'visit-roastery') {
 				target = 'home';
 			}
 
