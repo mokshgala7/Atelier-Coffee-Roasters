@@ -158,7 +158,7 @@ const rawProducts = [
 export const categories = ['Hot Coffees', 'Hot Chocolate', 'Cold Coffees', 'Shakes & Smoothies', 'Iced Tea', 'Mocktails', 'Matcha', 'Desserts', 'Brownies'].map((name) => ({
   id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
   name,
-  products: rawProducts.filter(([,, , category]) => category === name).map(([id, productName, price, category, description, calories]) => ({
+  products: rawProducts.filter(([,, , category]) => category === name || (name === 'Desserts' && category === 'Brownies')).map(([id, productName, price, category, description, calories]) => ({
     id,
     name: productName,
     price,
@@ -169,7 +169,9 @@ export const categories = ['Hot Coffees', 'Hot Chocolate', 'Cold Coffees', 'Shak
   })),
 }));
 
-export const menuProducts = categories.flatMap((category) => category.products);
+export const menuProducts = Array.from(
+  new Map(categories.flatMap((category) => category.products).map((p) => [p.id, p])).values()
+);
 
 export const addOnOptions = [
   {
