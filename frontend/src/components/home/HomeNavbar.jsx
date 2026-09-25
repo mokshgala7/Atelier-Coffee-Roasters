@@ -1,4 +1,5 @@
 import { useCart } from '../../hooks/useCart';
+import atelierLogo from '../../assets/images/logo.webp';
 
 export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 	const { items } = useCart();
@@ -26,9 +27,11 @@ export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 					onClick={() => onNavigate('home')}
 					className="flex items-center gap-3 text-left bg-transparent border-0 p-0 cursor-pointer group"
 				>
-					<div className="w-10 h-10 rounded-full bg-[#f6ece7] flex items-center justify-center text-[#84310e] text-xl font-serif shadow-xs group-hover:scale-105 transition-transform">
-						☕
-					</div>
+					<img
+						src={atelierLogo}
+						alt="Atelier Coffee Roasters Logo"
+						className="w-11 h-11 rounded-full object-cover shadow-xs group-hover:scale-105 transition-transform border border-[#dcc1b8]/50"
+					/>
 					<div className="flex flex-col">
 						<span className="font-['Playfair_Display',serif] text-xl font-semibold text-[#84310e] tracking-tight leading-none group-hover:text-[#a34824] transition-colors">
 							Atelier Roasters

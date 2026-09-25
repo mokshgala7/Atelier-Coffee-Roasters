@@ -1,3 +1,5 @@
+import atelierLogo from '../../assets/images/logo.webp';
+
 export default function CategorySidebar({ categories, activeCategory }) {
 	const totalItems = categories.reduce((sum, cat) => sum + cat.products.length, 0);
 	return (
@@ -7,7 +9,7 @@ export default function CategorySidebar({ categories, activeCategory }) {
 					<h2>Selections</h2>
 					<p>{totalItems} handcrafted items</p>
 				</div>
-				<span>☕</span>
+				<img src={atelierLogo} alt="Atelier Logo" className="w-8 h-8 rounded-full object-cover border border-[#ebdcd5]" />
 			</div>
 			<nav>
 				{categories.map((category) => (

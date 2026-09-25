@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import atelierLogo from '../../assets/images/logo.webp';
 
 export default function HomeFooter({ onShowToast, onNavigate }) {
 	const [email, setEmail] = useState('');
@@ -20,9 +21,11 @@ export default function HomeFooter({ onShowToast, onNavigate }) {
 					{/* Brand Column */}
 					<div className="lg:col-span-2 space-y-4">
 						<div className="flex items-center gap-3">
-							<div className="w-9 h-9 rounded-full bg-[#fff8f5] border border-[#ebdcd5] flex items-center justify-center text-[#84310e] text-lg font-serif">
-								☕
-							</div>
+							<img
+								src={atelierLogo}
+								alt="Atelier Coffee Roasters Logo"
+								className="w-10 h-10 rounded-full object-cover border border-[#ebdcd5] shadow-2xs"
+							/>
 							<span className="font-['Playfair_Display',serif] text-xl font-semibold text-[#84310e]">
 								Atelier Roasters
 							</span>
