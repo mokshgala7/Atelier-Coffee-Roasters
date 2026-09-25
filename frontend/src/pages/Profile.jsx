@@ -178,8 +178,8 @@ export default function Profile({ onNavigate, onShowToast }) {
                           <strong className="font-mono text-sm text-[#1f1b18]">
                             #{order._id?.slice(-8).toUpperCase()}
                           </strong>
-                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-['Plus_Jakarta_Sans',sans-serif] font-bold uppercase tracking-wider">
-                            {order.status || 'Preparing'}
+                          <span className="px-2.5 py-0.5 rounded-full bg-[#f6ece7] text-[#84310e] text-[10px] font-['Plus_Jakarta_Sans',sans-serif] font-bold uppercase tracking-wider">
+                            Ordered
                           </span>
                         </div>
                         <span className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] text-[#665c55] mt-0.5 block">

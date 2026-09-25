@@ -43,7 +43,7 @@ export async function createOrder(request, response) {
       paymentMethod: paymentMethod || 'UPI',
       paymentStatus: paymentStatus || 'Paid',
       paymentDetails: paymentDetails || {},
-      status: 'Preparing',
+      status: 'Ordered',
       notes
     });
 
