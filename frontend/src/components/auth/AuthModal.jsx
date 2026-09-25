@@ -160,7 +160,6 @@ export default function AuthModal({ onShowToast }) {
                 required
                 value={loginIdentifier}
                 onChange={(e) => setLoginIdentifier(e.target.value)}
-                placeholder="e.g. aarav@example.com or 9876543210"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -172,7 +171,6 @@ export default function AuthModal({ onShowToast }) {
                 required
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
-                placeholder="••••••••"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -195,7 +193,6 @@ export default function AuthModal({ onShowToast }) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Aarav Sharma"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -207,7 +204,6 @@ export default function AuthModal({ onShowToast }) {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="e.g. 9876543210"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -219,7 +215,6 @@ export default function AuthModal({ onShowToast }) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. aarav@example.com"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -232,7 +227,6 @@ export default function AuthModal({ onShowToast }) {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs outline-none focus:border-[#84310e]"
               />
             </label>
@@ -246,12 +240,6 @@ export default function AuthModal({ onShowToast }) {
             </button>
           </form>
         )}
-
-        <div className="pt-4 text-center">
-          <p className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] text-[#89726a] m-0">
-            Protected with bcrypt salt hashing · Saved directly to MongoDB Atlas
-          </p>
-        </div>
       </div>
     </div>
   );

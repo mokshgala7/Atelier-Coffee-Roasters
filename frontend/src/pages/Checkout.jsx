@@ -122,7 +122,7 @@ export default function Checkout({ onNavigate }) {
               Receipt Confirmed
             </h2>
             <p className="font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55]">
-              Order #{placedOrder._id?.slice(-8).toUpperCase()} · Saved directly to MongoDB Atlas
+              Order #{placedOrder._id?.slice(-8).toUpperCase()} · Verified Order
             </p>
           </div>
 
@@ -641,7 +641,7 @@ export default function Checkout({ onNavigate }) {
 
               <div className="text-center pt-1">
                 <span className="font-['Plus_Jakarta_Sans',sans-serif] text-[10px] text-[#89726a]">
-                  🔒 Simulated Payment · Order records saved live to MongoDB Atlas
+                  🔒 Simulated Payment · 256-bit Encrypted Checkout
                 </span>
               </div>
             </div>

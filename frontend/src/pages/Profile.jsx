@@ -155,7 +155,7 @@ export default function Profile({ onNavigate, onShowToast }) {
             {loading ? (
               <div className="p-12 text-center text-[#665c55] font-['Plus_Jakarta_Sans',sans-serif] text-xs">
                 <span className="material-symbols-outlined text-[28px] animate-spin text-[#a34824] block mb-2">refresh</span>
-                Retrieving order records from MongoDB Atlas...
+                Retrieving order records...
               </div>
             ) : orders.length > 0 ? (
               orders.map((order) => {
