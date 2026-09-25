@@ -5,10 +5,12 @@ import DigitalService from '../components/home/DigitalService';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import VisitRoastery from '../components/home/VisitRoastery';
 import HomeFooter from '../components/home/HomeFooter';
+import TastingModal from '../components/home/TastingModal';
 
 export default function Home({ onNavigate, onOpenCart }) {
 	const [toastText, setToastText] = useState('');
 	const [showToast, setShowToast] = useState(false);
+	const [isTastingOpen, setIsTastingOpen] = useState(false);
 
 	const triggerToast = (msg) => {
 		setToastText(msg);
@@ -46,12 +48,19 @@ export default function Home({ onNavigate, onOpenCart }) {
 			<TestimonialsSection onShowToast={triggerToast} />
 
 			{/* 5. Visit the Roastery (SVKM College Campus) */}
-			<VisitRoastery />
+			<VisitRoastery onOpenTastingModal={() => setIsTastingOpen(true)} />
 
 			{/* 6. Footer with Dispatch Subscription */}
 			<HomeFooter
 				onShowToast={triggerToast}
 				onNavigate={onNavigate}
+			/>
+
+			{/* Interactive Tasting Reservation Modal */}
+			<TastingModal
+				isOpen={isTastingOpen}
+				onClose={() => setIsTastingOpen(false)}
+				onShowToast={triggerToast}
 			/>
 		</div>
 	);

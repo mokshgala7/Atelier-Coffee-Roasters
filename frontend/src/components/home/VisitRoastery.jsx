@@ -1,4 +1,4 @@
-export default function VisitRoastery() {
+export default function VisitRoastery({ onOpenTastingModal }) {
 	const collegeName = "SVKM's Shri Bhagubhai Mafatlal Polytechnic and College of Engineering";
 	const collegeAddress = "Irla, N. R. G. Marg, Opposite Cooper Hospital, JVPD Scheme, Vile Parle West, Mumbai, Maharashtra 400056";
 	const mapsUrl = "http://google.com/maps/place/SVKM's+Shri+Bhagubhai+Mafatlal+Polytechnic+and+College+of+Engineering/@19.1076102,72.8378213,17z/data=!3m1!4b1!4m6!3m5!1s0x3be7c9c651c56f9b:0xc32173e36e9d804f!8m2!3d19.1076102!4d72.8378213!16s%2Fm%2F0cr51bd?entry=ttu&g_ep=EgoyMDI2MDkyMi4wIKXMDSoASAFQAw%3D%3D";
@@ -48,7 +48,7 @@ export default function VisitRoastery() {
 										Opening Hours
 									</h4>
 									<p className="font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55] mt-0.5">
-										Monday – Sunday : 07:00 AM – 10:00 PM
+										Monday – Sunday : 07:00 AM – 11:59 PM
 									</p>
 									<p className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] font-semibold text-[#a34824] mt-1">
 										Live Roasting Sessions: Tue &amp; Fri mornings
@@ -58,7 +58,7 @@ export default function VisitRoastery() {
 						</div>
 
 						{/* Action Buttons */}
-						<div className="pt-1">
+						<div className="flex flex-wrap items-center gap-3 pt-1">
 							<a
 								href={mapsUrl}
 								target="_blank"
@@ -68,6 +68,15 @@ export default function VisitRoastery() {
 								<span className="material-symbols-outlined text-[18px]">directions</span>
 								Get Directions
 							</a>
+
+							<button
+								type="button"
+								onClick={onOpenTastingModal}
+								className="px-6 py-3.5 rounded-full bg-[#fff8f5] hover:bg-[#eae1db] text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 border border-[#dcc1b8] cursor-pointer"
+							>
+								<span className="material-symbols-outlined text-[18px]">calendar_today</span>
+								Book Tasting Table
+							</button>
 						</div>
 					</div>
 

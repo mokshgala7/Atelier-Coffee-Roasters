@@ -84,19 +84,14 @@ export default function HomeFooter({ onShowToast, onNavigate }) {
 						</h4>
 						<ul className="space-y-2 font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55] list-none p-0 m-0">
 							<li>
-								<span className="font-semibold text-[#1f1b18]">Monday – Friday</span>
+								<span className="font-semibold text-[#1f1b18]">Monday – Sunday</span>
 								<br />
-								07:00 AM – 09:00 PM
+								07:00 AM – 11:59 PM
 							</li>
 							<li className="pt-1">
-								<span className="font-semibold text-[#1f1b18]">Saturday – Sunday</span>
+								<span className="font-semibold text-[#a34824]">Live Roasting Sessions</span>
 								<br />
-								08:00 AM – 10:00 PM
-							</li>
-							<li className="pt-1">
-								<span className="font-semibold text-[#a34824]">Cupping Sessions</span>
-								<br />
-								Thu &amp; Sat at 11:00 AM
+								Tue &amp; Fri mornings
 							</li>
 						</ul>
 					</div>

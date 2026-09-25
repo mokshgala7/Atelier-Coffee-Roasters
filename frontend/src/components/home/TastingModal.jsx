@@ -55,13 +55,22 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 		return `${h12}:${m} ${period}`;
 	};
 
+	const isTimeWithinRoasteryHours = (timeStr) => {
+		if (!timeStr) return false;
+		const [hours, minutes] = timeStr.split(':').map(Number);
+		const totalMinutes = hours * 60 + minutes;
+		// 07:00 AM = 7 * 60 = 420 minutes
+		// 11:59 PM = 23 * 60 + 59 = 1439 minutes
+		return totalMinutes >= 420 && totalMinutes <= 1439;
+	};
+
 	const quickTimeSlots = [
-		{ label: '10:00 AM', value: '10:00' },
-		{ label: '11:30 AM', value: '11:30' },
+		{ label: '08:00 AM', value: '08:00' },
+		{ label: '11:00 AM', value: '11:00' },
 		{ label: '02:00 PM', value: '14:00' },
-		{ label: '04:00 PM', value: '16:00' },
-		{ label: '05:30 PM', value: '17:30' },
-		{ label: '07:00 PM', value: '19:00' }
+		{ label: '05:00 PM', value: '17:00' },
+		{ label: '08:00 PM', value: '20:00' },
+		{ label: '10:30 PM', value: '22:30' }
 	];
 
 	const handleOpenDatePicker = () => {
@@ -96,6 +105,11 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 		}
 		if (!selectedTime) {
 			onShowToast('Please select a time from the clock');
+			return;
+		}
+
+		if (!isTimeWithinRoasteryHours(selectedTime)) {
+			onShowToast('We cannot reserve tasting beyond opening hours (07:00 AM – 11:59 PM).');
 			return;
 		}
 
@@ -134,7 +148,7 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 								Reserve Tasting Experience
 							</h3>
 							<p className="font-['Plus_Jakarta_Sans',sans-serif] text-xs text-[#665c55] mt-1">
-								Available all 7 days of the week at SVKM Flagship Roastery Pavilion, Vile Parle West.
+								Monday – Sunday : 07:00 AM – 11:59 PM · Live Roasting: Tue &amp; Fri mornings
 							</p>
 						</div>
 
@@ -201,7 +215,7 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
 								<label className="font-['Plus_Jakarta_Sans',sans-serif] text-xs font-semibold text-[#56423c]">
-									Select Time (Clock &amp; Custom Hour)
+									Select Time (07:00 AM – 11:59 PM only)
 								</label>
 								<button
 									type="button"
@@ -216,7 +230,11 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 							{/* Interactive Clock Input */}
 							<div
 								onClick={handleOpenTimePicker}
-								className="relative flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-white border border-[#ebdcd5] hover:border-[#a34824] cursor-pointer transition-colors shadow-2xs"
+								className={`relative flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-white border transition-colors shadow-2xs cursor-pointer ${
+									!isTimeWithinRoasteryHours(selectedTime)
+										? 'border-red-400 bg-red-50/20'
+										: 'border-[#ebdcd5] hover:border-[#a34824]'
+								}`}
 							>
 								<div className="flex items-center gap-2.5 text-[#1f1b18] font-['Plus_Jakarta_Sans',sans-serif] text-xs font-medium">
 									<span className="material-symbols-outlined text-[#a34824] text-[18px]">schedule</span>
@@ -225,6 +243,8 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 								<input
 									ref={timeInputRef}
 									type="time"
+									min="07:00"
+									max="23:59"
 									value={selectedTime}
 									onChange={(e) => setSelectedTime(e.target.value)}
 									className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
@@ -234,6 +254,16 @@ export default function TastingModal({ isOpen, onClose, onShowToast }) {
 									Pick Clock ▾
 								</span>
 							</div>
+
+							{!isTimeWithinRoasteryHours(selectedTime) ? (
+								<p className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] text-red-600 font-semibold m-0">
+									⚠️ Tastings can only be reserved during Roastery hours: 07:00 AM – 11:59 PM.
+								</p>
+							) : (
+								<p className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] text-[#89726a] m-0">
+									Roastery Hours: Monday – Sunday : 07:00 AM – 11:59 PM
+								</p>
+							)}
 
 							{/* Quick Time Slots */}
 							<div className="flex flex-wrap gap-1.5 pt-0.5">
