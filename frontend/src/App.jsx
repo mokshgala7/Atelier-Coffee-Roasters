@@ -50,12 +50,16 @@ function AppContent() {
 			}
 
 			if (target !== activePage) {
-				setIsTransitioning(true);
-				setTransitionMsg('Switching Selection');
-				setActivePage(target);
-				setTimeout(() => {
-					setIsTransitioning(false);
-				}, 1200);
+				if (target === 'menu') {
+					setIsTransitioning(true);
+					setTransitionMsg('Artisanal Selections');
+					setActivePage(target);
+					setTimeout(() => {
+						setIsTransitioning(false);
+					}, 1200);
+				} else {
+					setActivePage(target);
+				}
 			}
 		};
 
@@ -66,26 +70,26 @@ function AppContent() {
 	const navigate = (page) => {
 		if (page === activePage) return;
 
-		setIsTransitioning(true);
-		setTransitionMsg(
-			page === 'menu'
-				? 'Artisanal Selections'
-				: page === 'checkout'
-				? 'Securing Barista Order'
-				: page === 'profile'
-				? 'Customer Dossier'
-				: 'Welcome to Atelier'
-		);
+		// Video pop-up only plays when going to the menu
+		if (page === 'menu') {
+			setIsTransitioning(true);
+			setTransitionMsg('Artisanal Selections');
 
-		setTimeout(() => {
+			setTimeout(() => {
+				setActivePage(page);
+				window.location.hash = page;
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}, 200);
+
+			setTimeout(() => {
+				setIsTransitioning(false);
+			}, 1250);
+		} else {
+			// Instant navigation for all other pages without video pop-up
 			setActivePage(page);
 			window.location.hash = page === 'home' ? '' : page;
 			window.scrollTo({ top: 0, behavior: 'smooth' });
-		}, 200);
-
-		setTimeout(() => {
-			setIsTransitioning(false);
-		}, 1250);
+		}
 	};
 
 	return (
