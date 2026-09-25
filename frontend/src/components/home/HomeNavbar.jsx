@@ -1,8 +1,10 @@
 import { useCart } from '../../hooks/useCart';
+import { useAuth } from '../../context/AuthContext';
 import atelierLogo from '../../assets/images/logo.webp';
 
 export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 	const { items } = useCart();
+	const { user, isAuthenticated, openAuthModal } = useAuth();
 	const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
 	const handleScrollTo = (sectionId) => {
@@ -75,10 +77,14 @@ export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 					</button>
 					<button
 						type="button"
-						onClick={() => handleScrollTo('digital-service')}
-						className="font-['Plus_Jakarta_Sans',sans-serif] text-sm font-medium text-[#56423c] hover:text-[#1f1b18] hover:bg-[#f6ece7] transition-all rounded-full py-1.5 px-3 border-0 bg-transparent cursor-pointer"
+						onClick={() => onNavigate('profile')}
+						className={`transition-all font-['Plus_Jakarta_Sans',sans-serif] text-sm font-semibold rounded-full py-1.5 px-4 border-0 cursor-pointer ${
+							activePage === 'profile'
+								? 'bg-[#ebddd4] text-[#1f1b18]'
+								: 'bg-transparent text-[#56423c] hover:text-[#1f1b18] hover:bg-[#f6ece7]'
+						}`}
 					>
-						Atelier Experience
+						My Orders &amp; Profile
 					</button>
 					<button
 						type="button"
@@ -91,6 +97,27 @@ export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 
 				{/* Right Side CTAs */}
 				<div className="flex items-center gap-3">
+					{/* Sign In / User Profile Pill */}
+					{isAuthenticated ? (
+						<button
+							type="button"
+							onClick={() => onNavigate('profile')}
+							className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f6ece7] hover:bg-[#ebdcd5] text-[#84310e] font-['Plus_Jakarta_Sans',sans-serif] text-xs font-bold border border-[#ebdcd5] cursor-pointer transition-colors"
+						>
+							<span className="material-symbols-outlined text-[16px]">account_circle</span>
+							<span>{user.name?.split(' ')[0]}</span>
+						</button>
+					) : (
+						<button
+							type="button"
+							onClick={() => openAuthModal('login')}
+							className="hidden sm:inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#f6ece7] hover:bg-[#ebdcd5] text-[#84310e] font-['Plus_Jakarta_Sans',sans-serif] text-xs font-bold border border-[#ebdcd5] cursor-pointer transition-colors"
+						>
+							<span className="material-symbols-outlined text-[16px]">login</span>
+							<span>Sign In</span>
+						</button>
+					)}
+
 					{/* Order Online Button */}
 					<button
 						type="button"

@@ -1,8 +1,17 @@
 import { useCart } from '../../hooks/useCart';
 
-export default function CartDrawer({ isOpen, onClose }) {
+export default function CartDrawer({ isOpen, onClose, onNavigate }) {
 	const { items, subtotal, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } = useCart();
 	if (!isOpen) return null;
+
+	const handleCheckout = () => {
+		onClose();
+		if (onNavigate) {
+			onNavigate('checkout');
+		} else {
+			window.location.hash = 'checkout';
+		}
+	};
 	return (
 		<div className="drawer-backdrop" role="presentation" onClick={onClose}>
 			<aside className="cart-drawer" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
@@ -49,7 +58,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 								<span>Subtotal</span>
 								<b>₹{subtotal}</b>
 							</div>
-							<button className="button button-primary" type="button" onClick={onClose}>Continue to checkout</button>
+							<button className="button button-primary" type="button" onClick={handleCheckout}>Continue to checkout</button>
 							<button className="clear-button" type="button" onClick={clearCart}>Clear cart</button>
 						</div>
 					</>
