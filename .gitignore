@@ -2,6 +2,11 @@ node_modules/
 dist/
 frontend/dist/
 .env
+.env.*
+!.env.example
+.env.local
 .DS_Store
 *.log
 scratch/
+
+

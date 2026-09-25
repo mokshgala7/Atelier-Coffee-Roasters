@@ -1,6 +1,7 @@
 import { useState, useId } from 'react';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 import atelierLogo from '../assets/images/logo.webp';
 
 export default function Checkout({ onNavigate }) {
@@ -84,19 +85,9 @@ export default function Checkout({ onNavigate }) {
     };
 
     try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to place order in database');
-      }
-
+      const data = await api.post('/api/orders', payload);
       clearCart();
-      setPlacedOrder(data.order);
+      setPlacedOrder(data.order || data.data);
     } catch (err) {
       console.error('Order error:', err);
       setErrorMessage(err.message || 'Failed to process order. Please try again.');

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
+import api from '../services/api';
 import atelierLogo from '../assets/images/logo.webp';
 
 export default function Profile({ onNavigate, onShowToast }) {
@@ -26,30 +27,27 @@ export default function Profile({ onNavigate, onShowToast }) {
       try {
         const orderUrl = `/api/orders/user/${user.id || 'me'}?email=${encodeURIComponent(user.email || '')}&phone=${encodeURIComponent(user.phone || '')}`;
 
-        const [ordersRes, resvRes] = await Promise.all([
-          fetch(orderUrl).catch(() => null),
-          fetch('/api/reservations').catch(() => null)
+        const [ordersData, resvData] = await Promise.all([
+          api.get(orderUrl).catch(() => []),
+          api.get('/api/reservations').catch(() => [])
         ]);
 
-        if (ordersRes && ordersRes.ok) {
-          const ordersData = await ordersRes.json();
-          if (Array.isArray(ordersData)) {
-            setOrders(ordersData);
-          }
-        }
+        const ordersList = Array.isArray(ordersData)
+          ? ordersData
+          : (ordersData?.orders || ordersData?.data || []);
+        setOrders(ordersList);
 
-        if (resvRes && resvRes.ok) {
-          const resvData = await resvRes.json();
-          if (Array.isArray(resvData)) {
-            const userResvs = resvData.filter(
-              (r) =>
-                (user.phone && r.phone === user.phone) ||
-                (user.email && r.email?.toLowerCase() === user.email.toLowerCase()) ||
-                (user.name && r.name?.toLowerCase().includes(user.name?.toLowerCase()))
-            );
-            setReservations(userResvs);
-          }
-        }
+        const resvList = Array.isArray(resvData)
+          ? resvData
+          : (resvData?.reservations || resvData?.data || []);
+
+        const userResvs = resvList.filter(
+          (r) =>
+            (user.phone && r.phone === user.phone) ||
+            (user.email && r.email?.toLowerCase() === user.email.toLowerCase()) ||
+            (user.name && r.name?.toLowerCase().includes(user.name?.toLowerCase()))
+        );
+        setReservations(userResvs);
       } catch (err) {
         console.warn('Error fetching user data:', err);
       } finally {

@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { getAdminDashboard } from '../controllers/adminController.js';
+import { getAdminDashboard, getAllUsers } from '../controllers/adminController.js';
+import { requireAdmin } from '../middleware/adminMiddleware.js';
+
 const router = Router();
-router.get('/dashboard', getAdminDashboard);
+
+router.get('/dashboard', requireAdmin, getAdminDashboard);
+router.get('/users', requireAdmin, getAllUsers);
+
 export default router;
+

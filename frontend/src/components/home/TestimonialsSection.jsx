@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import AddReviewModal from './AddReviewModal';
+import api from '../../services/api';
 
 const defaultTestimonials = [
 	{
@@ -42,15 +43,12 @@ export default function TestimonialsSection({ onShowToast }) {
 
 	// Load published reviews from MongoDB Atlas on mount
 	useEffect(() => {
-		fetch('/api/reviews')
-			.then((res) => {
-				if (!res.ok) throw new Error('Network response was not ok');
-				return res.json();
-			})
+		api.get('/api/reviews')
 			.then((data) => {
-				if (Array.isArray(data) && data.length > 0) {
+				const list = Array.isArray(data) ? data : (data?.data || data?.reviews || []);
+				if (Array.isArray(list) && list.length > 0) {
 					// Format MongoDB documents for display
-					const formatted = data.map((d) => ({
+					const formatted = list.map((d) => ({
 						id: d._id || d.id,
 						author: d.author,
 						publication: d.publication || 'Verified Patron',
@@ -89,16 +87,12 @@ export default function TestimonialsSection({ onShowToast }) {
 
 		// Persist directly to MongoDB Atlas
 		try {
-			const res = await fetch('/api/reviews', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(newReview)
-			});
-			const result = await res.json();
-			if (result.success && result.review?._id) {
+			const result = await api.post('/api/reviews', newReview);
+			const savedReview = result.review || result.data;
+			if (result.success && savedReview?._id) {
 				// Update with official MongoDB _id
 				setReviews((prev) =>
-					prev.map((r) => (r.id === newReview.id ? { ...r, id: result.review._id } : r))
+					prev.map((r) => (r.id === newReview.id ? { ...r, id: savedReview._id } : r))
 				);
 			}
 		} catch (err) {

@@ -6,13 +6,16 @@ import {
   getOrderById,
   deleteOrder
 } from '../controllers/orderController.js';
+import { requireAuth, optionalAuth } from '../middleware/authMiddleware.js';
+import { requireAdmin } from '../middleware/adminMiddleware.js';
 
 const router = Router();
 
-router.get('/', getOrders);
-router.get('/user/:userId', getOrdersByUser);
-router.get('/:id', getOrderById);
-router.post('/', createOrder);
-router.delete('/:id', deleteOrder);
+router.get('/', requireAdmin, getOrders);
+router.get('/user/:userId', requireAuth, getOrdersByUser);
+router.get('/:id', requireAuth, getOrderById);
+router.post('/', optionalAuth, createOrder);
+router.delete('/:id', requireAdmin, deleteOrder);
 
 export default router;
+

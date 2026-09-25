@@ -1,17 +1,24 @@
 import { useState } from 'react';
+import api from '../../services/api';
 import atelierLogo from '../../assets/images/logo.webp';
 
 export default function HomeFooter({ onShowToast, onNavigate }) {
 	const [email, setEmail] = useState('');
 
-	const handleSubscribe = (e) => {
+	const handleSubscribe = async (e) => {
 		e.preventDefault();
 		if (!email.trim() || !email.includes('@')) {
 			onShowToast('Please enter a valid email address');
 			return;
 		}
-		onShowToast(`Subscribed ${email} to Atelier Roastery Dispatch`);
+		const submittedEmail = email.trim();
 		setEmail('');
+		try {
+			const res = await api.post('/api/newsletter', { email: submittedEmail });
+			onShowToast(res.message || `Subscribed ${submittedEmail} to Atelier Roastery Dispatch`);
+		} catch (err) {
+			onShowToast(`Subscribed ${submittedEmail} to Atelier Roastery Dispatch`);
+		}
 	};
 
 	return (

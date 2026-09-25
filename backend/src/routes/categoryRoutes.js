@@ -1,5 +1,20 @@
 import { Router } from 'express';
-import { getCategories } from '../controllers/categoryController.js';
+import {
+  getCategories,
+  getCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory
+} from '../controllers/categoryController.js';
+import { requireAdmin } from '../middleware/adminMiddleware.js';
+
 const router = Router();
+
 router.get('/', getCategories);
+router.get('/:id', getCategoryById);
+router.post('/', requireAdmin, createCategory);
+router.put('/:id', requireAdmin, updateCategory);
+router.delete('/:id', requireAdmin, deleteCategory);
+
 export default router;
+

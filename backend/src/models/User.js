@@ -22,9 +22,17 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, 'Password is required']
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
     }
   },
   { timestamps: true }
 );
+
+userSchema.index({ phone: 1 });
+
 
 export default mongoose.model('User', userSchema);

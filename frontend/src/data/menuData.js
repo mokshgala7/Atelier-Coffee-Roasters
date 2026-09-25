@@ -102,8 +102,8 @@ const productImages = {
   'cookie-dough-brownie': cookieDoughBrownieImage,
 };
 
-function getProductImage(productId) {
-  return productImages[productId];
+export function getProductImage(productId) {
+  return productImages[productId] || productImages['cappuccino'];
 }
 
 const rawProducts = [
@@ -158,7 +158,7 @@ const rawProducts = [
 export const categories = ['Hot Coffees', 'Hot Chocolate', 'Cold Coffees', 'Shakes & Smoothies', 'Iced Tea', 'Mocktails', 'Matcha', 'Desserts', 'Brownies'].map((name) => ({
   id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
   name,
-  products: rawProducts.filter(([,, , category]) => category === name || (name === 'Desserts' && category === 'Brownies')).map(([id, productName, price, category, description, calories]) => ({
+  products: rawProducts.filter(([,, , category]) => category === name).map(([id, productName, price, category, description, calories]) => ({
     id,
     name: productName,
     price,
