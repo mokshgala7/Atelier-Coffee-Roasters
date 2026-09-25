@@ -1,6 +1,6 @@
 import { useCart } from '../../hooks/useCart';
 
-export default function HomeNavbar({ activePage, onNavigate, onOpenCart, onOpenTableInfo }) {
+export default function HomeNavbar({ activePage, onNavigate, onOpenCart }) {
 	const { items } = useCart();
 	const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -88,19 +88,6 @@ export default function HomeNavbar({ activePage, onNavigate, onOpenCart, onOpenT
 
 				{/* Right Side CTAs */}
 				<div className="flex items-center gap-3">
-					{/* Table Status Chip */}
-					<button
-						type="button"
-						onClick={onOpenTableInfo}
-						className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-[#f6ece7] hover:bg-[#ebdcd5] border border-[#ebdcd5] rounded-full text-[#665c55] cursor-pointer transition-colors"
-						title="Table order active at SVKM Campus Atelier"
-					>
-						<span className="w-2 h-2 rounded-full bg-[#84310e] animate-pulse"></span>
-						<span className="font-['Plus_Jakarta_Sans',sans-serif] text-[11px] font-bold tracking-wider uppercase text-[#56423c]">
-							Table 04 Active
-						</span>
-					</button>
-
 					{/* Order Online Button */}
 					<button
 						type="button"

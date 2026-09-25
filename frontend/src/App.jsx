@@ -4,12 +4,9 @@ import HomeNavbar from './components/home/HomeNavbar';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import CartDrawer from './components/cart/CartDrawer';
-import TableInfoModal from './components/home/TableInfoModal';
-
 function AppContent() {
 	const [activePage, setActivePage] = useState('home');
 	const [cartOpen, setCartOpen] = useState(false);
-	const [tableInfoOpen, setTableInfoOpen] = useState(false);
 
 	useEffect(() => {
 		const handleHashChange = () => {
@@ -39,7 +36,6 @@ function AppContent() {
 				activePage={activePage}
 				onNavigate={navigate}
 				onOpenCart={() => setCartOpen(true)}
-				onOpenTableInfo={() => setTableInfoOpen(true)}
 			/>
 
 			{/* Active View Router */}
@@ -59,13 +55,6 @@ function AppContent() {
 			<CartDrawer
 				isOpen={cartOpen}
 				onClose={() => setCartOpen(false)}
-			/>
-
-			{/* Interactive Table Status Modal */}
-			<TableInfoModal
-				isOpen={tableInfoOpen}
-				onClose={() => setTableInfoOpen(false)}
-				onNavigate={navigate}
 			/>
 		</div>
 	);

@@ -6,13 +6,11 @@ import TestimonialsSection from '../components/home/TestimonialsSection';
 import VisitRoastery from '../components/home/VisitRoastery';
 import HomeFooter from '../components/home/HomeFooter';
 import TastingModal from '../components/home/TastingModal';
-import TableInfoModal from '../components/home/TableInfoModal';
 
 export default function Home({ onNavigate, onOpenCart }) {
 	const [toastText, setToastText] = useState('');
 	const [showToast, setShowToast] = useState(false);
 	const [isTastingOpen, setIsTastingOpen] = useState(false);
-	const [isTableInfoOpen, setIsTableInfoOpen] = useState(false);
 
 	const triggerToast = (msg) => {
 		setToastText(msg);
@@ -49,8 +47,8 @@ export default function Home({ onNavigate, onOpenCart }) {
 			{/* 3. Digital Table Service Experience */}
 			<DigitalService onNavigate={onNavigate} />
 
-			{/* 4. Editorial Testimonials */}
-			<TestimonialsSection />
+			{/* 4. Editorial Testimonials with Add Review */}
+			<TestimonialsSection onShowToast={triggerToast} />
 
 			{/* 5. Visit the Roastery (SVKM College Campus) */}
 			<VisitRoastery
@@ -63,17 +61,11 @@ export default function Home({ onNavigate, onOpenCart }) {
 				onNavigate={onNavigate}
 			/>
 
-			{/* Interactive Modals */}
+			{/* Interactive Tasting Modal */}
 			<TastingModal
 				isOpen={isTastingOpen}
 				onClose={() => setIsTastingOpen(false)}
 				onShowToast={triggerToast}
-			/>
-
-			<TableInfoModal
-				isOpen={isTableInfoOpen}
-				onClose={() => setIsTableInfoOpen(false)}
-				onNavigate={onNavigate}
 			/>
 		</div>
 	);
