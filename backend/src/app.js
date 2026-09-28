@@ -17,28 +17,39 @@ import { errorMiddleware } from './middleware/errorMiddleware.js';
 const app = express();
 
 // CORS Configuration (Dev + Production)
-const allowedOrigins = [
+const defaultOrigins = [
   'http://localhost:5173',
   'http://localhost:5001',
   'http://localhost:3000',
   'http://127.0.0.1:5173'
 ];
 
-if (env.frontendUrl && !allowedOrigins.includes(env.frontendUrl)) {
-  allowedOrigins.push(env.frontendUrl);
-}
+// Cleanly parse FRONTEND_URL (supports single or comma-separated URLs, trimming trailing slashes)
+const configuredOrigins = (process.env.FRONTEND_URL || env.frontendUrl || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
+const allowedOrigins = Array.from(new Set([...defaultOrigins, ...configuredOrigins]));
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, server-to-server)
+      // Allow requests with no origin (mobile apps, curl, server-to-server, health checks)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+
+      const normalizedOrigin = origin.replace(/\/+$/, '');
+
+      // Allow configured origins (localhost + FRONTEND_URL)
+      if (allowedOrigins.includes(normalizedOrigin)) {
         return callback(null, true);
       }
-      if (process.env.NODE_ENV !== 'production' && origin.endsWith('.vercel.app')) {
+
+      // Allow Vercel frontend deployments (production and preview branches)
+      if (normalizedOrigin.endsWith('.vercel.app')) {
         return callback(null, true);
       }
+
       return callback(null, false);
     },
     credentials: true,

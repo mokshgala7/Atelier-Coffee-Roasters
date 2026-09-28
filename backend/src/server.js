@@ -3,6 +3,7 @@ import app from './app.js';
 import { connectDatabase } from './config/db.js';
 
 const port = process.env.PORT || 5001;
+const host = '0.0.0.0';
 
 async function startServer() {
   try {
@@ -11,8 +12,8 @@ async function startServer() {
     console.error('Failed to initialize MongoDB connection at startup:', error.message);
   }
 
-  app.listen(port, () => {
-    console.log(`☕ Atelier Coffee Roasters API listening on port ${port}`);
+  app.listen(port, host, () => {
+    console.log(`☕ Atelier Coffee Roasters API listening on ${host}:${port}`);
   });
 }
 

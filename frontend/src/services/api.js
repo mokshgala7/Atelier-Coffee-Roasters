@@ -1,8 +1,10 @@
 // Centralized API client for Atelier Coffee Roasters
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const rawBaseUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+const API_BASE_URL = rawBaseUrl.endsWith('/api') ? rawBaseUrl.slice(0, -4) : rawBaseUrl;
 
 export async function request(endpoint, options = {}) {
-  const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE_URL}${cleanEndpoint}`;
 
   const headers = {
     'Content-Type': 'application/json',
